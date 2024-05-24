@@ -74,8 +74,8 @@ export default function Layout() {
               name='menu' 
               listeners={{
                 tabPress: (e) => {
-                  e.preventDefault();  // previene la navigazione
-                  toggleModal();  // apre il modale
+                  e.preventDefault();
+                  toggleModal();
                 },
               }}
               options={{

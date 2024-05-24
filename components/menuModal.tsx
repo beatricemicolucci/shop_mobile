@@ -1,4 +1,5 @@
 import React , { useContext, useState } from 'react';
+import { router } from "expo-router";
 import { View, Text, Button, StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
 import { LanguageContext } from '@/contexts/LanguageContext';
@@ -51,9 +52,9 @@ const MenuModal: React.FC<MenuModalProps> = ({ visible, onClose }) => {
 
   const languageContext = useContext(LanguageContext);
   const locale = languageContext?.locale;
-  const categoriesApiUrl = `http://172.20.10.3:1337/api/categories?locale=${locale}&populate=*`;
+  const categoriesApiUrl = `http://192.168.1.101:1337/api/categories?locale=${locale}&populate=*`;
   const { loading: loadingCategories, error: errorcategories, data: categoriesData } = useFetch<CategoriesData>(categoriesApiUrl);
-  const menuApiUrl = `http://172.20.10.3:1337/api/categories-menu?locale=${locale}&populate=*`;
+  const menuApiUrl = `http://192.168.1.101:1337/api/categories-menu?locale=${locale}&populate=*`;
   const { loading: menuLoading, error: menuError, data: menuData } = useFetch<MenuData>(menuApiUrl);
   const navigation = useNavigation();
 
@@ -66,9 +67,12 @@ const MenuModal: React.FC<MenuModalProps> = ({ visible, onClose }) => {
     }));
   };
 
-  const handleSubCategoryPress = (subCategoryId) => {
+  const handleSubCategoryPress = (subCategoryId: number) => {
     onClose();
-    navigation.navigate('itemList', { subCategoryId });
+    router.push({
+      pathname: ".././itemsList/[id]",
+      params: { id: subCategoryId },
+    })
   };
 
   return (
@@ -96,7 +100,7 @@ const MenuModal: React.FC<MenuModalProps> = ({ visible, onClose }) => {
               {expandedCategories[category.id] && (
                 <View style={styles.subCategories}>
                   {category.attributes.sub_categories.data.map(subCategory => (
-                    <TouchableOpacity key={subCategory.id} onPress={onClose} style={styles.subCategory}>
+                    <TouchableOpacity key={subCategory.id} onPress={() => handleSubCategoryPress(subCategory.id)} style={styles.subCategory}>
                       <Text style={styles.subCategoryText}>{subCategory.attributes.nome}</Text>
                     </TouchableOpacity>
                   ))}

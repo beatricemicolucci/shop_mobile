@@ -97,9 +97,9 @@ const Page = () => {
 
   const languageContext = useContext(LanguageContext);
   const locale = languageContext?.locale;
-  const salesPointsApiUrl = `http://172.20.10.3:1337/api/sales-points?locale=${locale}&populate=*`;
-  const salesPointPageApiUrl = `http://172.20.10.3:1337/api/sales-point-page?locale=${locale}&populate=*`;
-  const regionsApiUrl = `http://172.20.10.3:1337/api/regions?locale=${locale}&populate=*`;
+  const salesPointsApiUrl = `http://192.168.1.101:1337/api/sales-points?locale=${locale}&populate=*`;
+  const salesPointPageApiUrl = `http://192.168.1.101:1337/api/sales-point-page?locale=${locale}&populate=*`;
+  const regionsApiUrl = `http://192.168.1.101:1337/api/regions?locale=${locale}&populate=*`;
   const { loading: loadingData, error: errorData, data: salesPointsData } = useFetch<SalesPointsData>(salesPointsApiUrl);
   const { loading: loadingPage, error: errorPage, data: pageData } = useFetch<PageData>(salesPointPageApiUrl);
   const { loading: loadingRegions, error: errorRegions, data: regionsData } = useFetch<RegionsData>(regionsApiUrl);

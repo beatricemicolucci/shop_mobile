@@ -4,6 +4,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { LanguageContext } from '@/contexts/LanguageContext';
 import useFetch from '@/hooks/useFetch';
 import { FontAwesome } from '@expo/vector-icons';
+import { router } from "expo-router";
 
 interface ProductsApiResponse {
   data: ProductsData[];
@@ -179,13 +180,19 @@ const ItemsList = () => {
         data={subCategory?.attributes?.products?.data || []}
         keyExtractor={item => item.id.toString()}
         renderItem={({ item }) => (
-          <View style={styles.productCard}>
-            <View style={styles.imageContainer}>
-              <Image source={{ uri: getImage(item.id) || 'placeholder_image_url' }} style={styles.image} />
+          <TouchableOpacity onPress={ () => router.push({
+              pathname: ".././itemDetails/[id]",
+              params: { id: item.id },
+            })}
+          >
+            <View style={styles.productCard}>
+              <View style={styles.imageContainer}>
+                <Image source={{ uri: getImage(item.id) || 'placeholder_image_url' }} style={styles.image} />
+              </View>
+              <Text style={styles.productName}>{item.attributes.name}</Text>
+              <Text style={styles.productPrice}>Price: {item.attributes.price}$</Text>
             </View>
-            <Text style={styles.productName}>{item.attributes.name}</Text>
-            <Text style={styles.productPrice}>Price: {item.attributes.price}$</Text>
-          </View>
+          </TouchableOpacity>
         )}
       />
     </View>

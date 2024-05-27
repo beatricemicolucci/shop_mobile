@@ -19,7 +19,7 @@ interface HomePageData {
 
 const Page = ()  => {
 
-    const apiUrl = `http://192.168.1.101:1337/api/home-page?populate=*`;
+    const apiUrl = `http://172.20.10.3:1337/api/home-page?populate=*`;
     const { loading, error, data: homePageData } = useFetch<HomePageData>(apiUrl);
 
     if (loading) {
@@ -31,7 +31,7 @@ const Page = ()  => {
     }
     
     const relativebackgroundImageUrl = homePageData?.data?.attributes?.backgroundImage?.data?.attributes?.url;
-    const backendUrl = 'http://192.168.1.101:1337';
+    const backendUrl = 'http://172.20.10.3:1337';
     const backgroundImageUrl = `${backendUrl}${relativebackgroundImageUrl}`;
 
 

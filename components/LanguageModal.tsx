@@ -1,3 +1,4 @@
+import useFetch from '@/hooks/useFetch';
 import React from 'react';
 import { Modal, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
@@ -7,7 +8,33 @@ interface LanguageModalProps {
   onSelectLanguage: (language: string) => void;
 }
 
+interface HeaderData {
+  data: {
+    id: number,
+    attributes: {
+      languages: [
+        {
+          language: string,
+          denUrl: string,
+          flag: {
+            data: {
+              attributes: {
+                url: string
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
 const LanguageModal: React.FC<LanguageModalProps> = ({ visible, onClose, onSelectLanguage }) => {
+
+  const contactsDataApiUrl = `http://172.20.10.3:1337/api/header?populate[0]=languages&populate[1]=languages.flag`;
+  const { loading: loadingData, error: errorData, data: headerData } = useFetch<HeaderData>(contactsDataApiUrl);
+
+
   return (
     <Modal
       animationType="slide"

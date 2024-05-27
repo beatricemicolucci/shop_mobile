@@ -52,9 +52,9 @@ const MenuModal: React.FC<MenuModalProps> = ({ visible, onClose }) => {
 
   const languageContext = useContext(LanguageContext);
   const locale = languageContext?.locale;
-  const categoriesApiUrl = `http://192.168.1.101:1337/api/categories?locale=${locale}&populate=*`;
+  const categoriesApiUrl = `http://172.20.10.3:1337/api/categories?locale=${locale}&populate=*`;
   const { loading: loadingCategories, error: errorcategories, data: categoriesData } = useFetch<CategoriesData>(categoriesApiUrl);
-  const menuApiUrl = `http://192.168.1.101:1337/api/categories-menu?locale=${locale}&populate=*`;
+  const menuApiUrl = `http://172.20.10.3:1337/api/categories-menu?locale=${locale}&populate=*`;
   const { loading: menuLoading, error: menuError, data: menuData } = useFetch<MenuData>(menuApiUrl);
   const navigation = useNavigation();
 

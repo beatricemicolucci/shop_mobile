@@ -30,8 +30,8 @@ const Page = () => {
 
   const languageContext = useContext(LanguageContext);
   const locale = languageContext?.locale;
-  const contactsDataApiUrl = `http://192.168.1.101:1337/api/company`;
-  const contactsFieldsApiUrl = `http://192.168.1.101:1337/api/contacts-bar?locale=${locale}`;
+  const contactsDataApiUrl = `http://172.20.10.3:1337/api/company`;
+  const contactsFieldsApiUrl = `http://172.20.10.3:1337/api/contacts-bar?locale=${locale}`;
   const { loading: loadingData, error: errorData, data: contactsData } = useFetch<ContactsData>(contactsDataApiUrl);
   const { loading: loadingFields, error: errorFields, data: contactsFields } = useFetch<ContactsFields>(contactsFieldsApiUrl);
 

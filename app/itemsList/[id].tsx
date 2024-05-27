@@ -108,9 +108,9 @@ const ItemsList = () => {
   const languageContext = useContext(LanguageContext);
   const locale = languageContext?.locale;
 
-  const subcategoriesApiUrl = `http://192.168.1.101:1337/api/sub-categories?locale=all&populate=*&pagination[pageSize]=100`;
+  const subcategoriesApiUrl = `http://172.20.10.3:1337/api/sub-categories?locale=all&populate=*&pagination[pageSize]=100`;
   const { loading: subcategoriesLoading, error: subcategoriesError, data: subcategoriesResult } = useFetch<SubCategoriesResult>(subcategoriesApiUrl);
-  const productsApiUrl = `http://192.168.1.101:1337/api/products?locale=all&populate=*&pagination[pageSize]=100`;
+  const productsApiUrl = `http://172.20.10.3:1337/api/products?locale=all&populate=*&pagination[pageSize]=100`;
   const { loading: productsLoading, error: productsError, data: productsData } = useFetch<ProductsApiResponse>(productsApiUrl);
 
   if (subcategoriesLoading || productsLoading) {
@@ -157,7 +157,7 @@ const ItemsList = () => {
   const getImage = (productId: number): string | null => {
     const product = productsData?.data.find((product: ProductData) => product.id === productId);
     if (product && product.attributes.image && product.attributes.image.data.length > 0) {
-      return `http://192.168.1.101:1337${product.attributes.image.data[0].attributes.url}`
+      return `http://172.20.10.3:1337${product.attributes.image.data[0].attributes.url}`
     }
     return null;
   };

@@ -10,7 +10,7 @@ import MenuModal from '@/components/menuModal';
 import LanguageModal from '@/components/LanguageModal';
 import { LanguageContext, LanguageProvider } from '@/contexts/LanguageContext';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-
+import { LeagueSpartan_600SemiBold, useFonts, LeagueSpartan_800ExtraBold, LeagueSpartan_700Bold } from '@expo-google-fonts/league-spartan';
 
 export default function Layout() {
 
@@ -31,6 +31,11 @@ export default function Layout() {
     setLanguageModalVisible(!isLanguageModalVisible);
   };
 
+  let [fontsLoaded] = useFonts({
+    LeagueSpartan_700Bold  
+  });
+
+
   return (
     <GestureHandlerRootView style={{ flex:1 }}>
       <Tabs screenOptions={{
@@ -47,8 +52,7 @@ export default function Layout() {
           headerTitle: 'Galleria Glamour',
           headerTitleAlign: 'center',
           headerTitleStyle: {
-            fontWeight: 'bold',
-            fontFamily: 'Libre Bodoni',
+            fontFamily: 'LeagueSpartan_700Bold',
             letterSpacing: 1.5
           },
           headerRight: () => (
@@ -70,7 +74,10 @@ export default function Layout() {
           <Tabs.Screen name='contacts' options={{tabBarIcon: ({color}) => (
               <MaterialCommunityIcons name="email" size={24} color={color} />
           )}}/>
-          <Tabs.Screen 
+          <Tabs.Screen name='menu' options={{tabBarIcon: ({color}) => (
+            <MaterialIcons name="menu" size={24} color={color} />
+          )}}/>
+          {/*<Tabs.Screen 
               name='menu' 
               listeners={{
                 tabPress: (e) => {
@@ -83,7 +90,7 @@ export default function Layout() {
                   <MaterialIcons name="menu" size={24} color={color} />
                 ),
               }}
-            />
+            />*/}
         </Tabs>
         <MenuModal visible={isModalVisible} onClose={toggleModal} />
         <LanguageModal
@@ -91,7 +98,6 @@ export default function Layout() {
           onClose={toggleLanguageModal}
           onSelectLanguage={(language) => {
             setLocale(language);
-            toggleLanguageModal();
           }}
         />
     </GestureHandlerRootView>

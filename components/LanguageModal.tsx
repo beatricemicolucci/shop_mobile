@@ -1,6 +1,8 @@
+import { LanguageContext } from '@/contexts/LanguageContext';
 import useFetch from '@/hooks/useFetch';
-import React from 'react';
-import { Modal, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useContext } from 'react';
+import { Modal, View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 
 interface LanguageModalProps {
   visible: boolean;
@@ -24,14 +26,18 @@ interface HeaderData {
             }
           }
         }
-      ]
+      ],
+      languageModalTitle: string
     }
   }
 }
 
 const LanguageModal: React.FC<LanguageModalProps> = ({ visible, onClose, onSelectLanguage }) => {
 
-  const contactsDataApiUrl = `http://172.20.10.3:1337/api/header?populate[0]=languages&populate[1]=languages.flag`;
+  const languageContext = useContext(LanguageContext);
+  const locale = languageContext?.locale;
+
+  const contactsDataApiUrl = `http://172.20.10.3:1337/api/header?locale=${locale}&populate[0]=languages&populate[1]=languages.flag`;
   const { loading: loadingData, error: errorData, data: headerData } = useFetch<HeaderData>(contactsDataApiUrl);
 
 
@@ -44,13 +50,19 @@ const LanguageModal: React.FC<LanguageModalProps> = ({ visible, onClose, onSelec
     >
       <View style={styles.modalBackground}>
         <View style={styles.modalContainer}>
-          <Text style={styles.modalTitle}>Select Language</Text>
-          <TouchableOpacity onPress={() => { onSelectLanguage('it-IT'); onClose(); }} style={styles.languageOption}>
-            <Text style={styles.languageText}>Italian</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => { onSelectLanguage('en'); onClose(); }} style={styles.languageOption}>
-            <Text style={styles.languageText}>English</Text>
-          </TouchableOpacity>
+          <Text style={styles.modalTitle}>{headerData?.data.attributes.languageModalTitle}</Text>
+          {headerData?.data.attributes.languages.map((language) => {
+            {console.log(language.flag.data.attributes.url)}
+            return (
+              <TouchableOpacity onPress={() => { onSelectLanguage(language.denUrl) }} style={locale === language.denUrl ? styles.selectedLanguageOption : styles.languageOption}>
+                <View style={styles.optionContainer}>
+                  <Image source={{ uri: `http://172.20.10.3:1337${language.flag.data.attributes.url}`}} style={styles.flagImage}/>
+                  <Text style={styles.languageText}>{language.language}</Text>
+                  {locale === language.denUrl ? <MaterialIcons name="done" size={20} color="black" style={styles.selectedIcon} /> : ''}
+                </View>
+              </TouchableOpacity>
+            )
+          })}
           <TouchableOpacity onPress={onClose} style={styles.closeButton}>
             <Text style={styles.closeButtonText}>Close</Text>
           </TouchableOpacity>
@@ -69,15 +81,17 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     width: 300,
-    backgroundColor: 'white',
-    borderRadius: 10,
+    backgroundColor: '#f0ddcb',
+    borderRadius: 30,
     padding: 20,
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
   modalTitle: {
+    width: '100%',
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 20,
+    textAlign: 'center',
   },
   languageOption: {
     padding: 10,
@@ -89,13 +103,47 @@ const styles = StyleSheet.create({
   closeButton: {
     marginTop: 20,
     padding: 10,
-    backgroundColor: '#6200EE',
-    borderRadius: 5,
+    backgroundColor: '#49516c',
+    borderRadius: 30,
+    alignSelf: 'center'
   },
   closeButtonText: {
     color: 'white',
     fontSize: 16,
+    paddingHorizontal: 5
   },
+  flagImage: {
+    width: 30,
+    height: 30,
+    borderRadius: 50,
+    borderWidth: 1,
+    borderColor: 'gray',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    marginRight: 10
+  },
+  optionContainer: {
+    flexDirection: 'row',
+    width: '100%',
+  },
+  selectedLanguageOption: {
+    flexDirection: 'row',
+    width: '100%',
+    backgroundColor: '#d3b8a6',
+    fontWeight: 'bold',
+    padding: 10,
+    borderRadius: 20
+  },
+  selectedIcon: {
+    alignSelf: 'center',
+    marginLeft: 90
+  }
 });
 
 export default LanguageModal;

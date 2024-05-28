@@ -1,11 +1,33 @@
-import React, { useContext, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { Stack } from "expo-router";
+import { SplashScreen, Stack } from "expo-router";
 import { MaterialIcons } from '@expo/vector-icons';
 import { LanguageProvider, LanguageContext } from "@/contexts/LanguageContext";
 import LanguageModal from '@/components/LanguageModal';
+import { useFonts, LeagueSpartan_400Regular, LeagueSpartan_600SemiBold, LeagueSpartan_700Bold } from '@expo-google-fonts/league-spartan';
+import AppLoading from 'expo-app-loading';
+
+SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+
+  const [fontsLoaded] = useFonts({
+    LeagueSpartan_400Regular,
+    LeagueSpartan_600SemiBold,
+    LeagueSpartan_700Bold
+  });
+
+  useEffect(() => {
+    if (fontsLoaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
+
   return (
     <LanguageProvider>
       <AppNavigator />
@@ -38,7 +60,7 @@ function AppNavigator() {
         headerTitleAlign: 'center',
         headerTitleStyle: {
           fontWeight: 'bold',
-          fontFamily: 'Libre Bodoni'
+          fontFamily: 'LeagueSpartan_400Regular'
         },
         headerRight: () => (
           <MaterialIcons

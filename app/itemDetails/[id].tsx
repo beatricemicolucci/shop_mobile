@@ -380,8 +380,8 @@ const Page = () => {
                       setSelectedColor(color.value);
                     }}
                     style={{
-                      height: selectedColor === color.value ? 45 : 40,
-                      width: selectedColor === color.value ? 45 : 40,
+                      height: selectedColor === color.value ? 40 : 35,
+                      width: selectedColor === color.value ? 40 : 35,
                       borderRadius: 50,
                       margin: 5,
                       borderWidth: 1,
@@ -478,25 +478,27 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20
   },
   productName: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 16,
+    fontFamily: 'Poppins_600SemiBold',
     marginBottom: 8,
   },
   productPrice: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#888888',
     marginBottom: 16,
+    fontFamily: 'Poppins_400Regular'
   },
   sectionTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: 14,
     marginBottom: 8,
-    marginTop: 16
+    marginTop: 16,
+    fontFamily: 'Poppins_500Medium',
   },
   productDescription: {
-    fontSize: 15,
+    fontSize: 13,
     color: '#555555',
     marginBottom: 16,
+    fontFamily: 'Poppins_400Regular'
   },
   radioGroup: {
     flexDirection: 'row',
@@ -528,18 +530,23 @@ const styles = StyleSheet.create({
   sizeText: {
     fontSize: 14,
     color: '#555555',
+    fontFamily: 'Poppins_300Light'
   },
   button: {
     backgroundColor: '#F0DDCB',
     paddingVertical: 12,
     paddingHorizontal: 16,
-    borderRadius: 24,
+    borderRadius: 30,
     alignItems: 'center',
     marginTop: 16,
+    marginBottom: 25,
+    width: '90%',
+    alignSelf: 'center'
   },
   buttonText: {
     fontSize: 16,
     color: '#000000',
+    fontFamily: 'Poppins_400Regular'
   },
   titleContainer: {
     flexDirection: 'row',

@@ -172,11 +172,11 @@ const ItemsList = () => {
     <View style={styles.container}>
       <View style={styles.breadcrumbContainer}>
         <Breadcrumb text={subCategory?.attributes?.category?.data?.attributes?.category} />
-        <FontAwesome name="angle-right" size={24} color="black" />
+        <FontAwesome name="angle-right" size={20} color="black" />
         <Breadcrumb text={subCategory?.attributes?.nome}/>
       </View>
       <FlatList
-        style={{alignSelf:'center'}}
+        style={styles.flatList}
         data={subCategory?.attributes?.products?.data || []}
         keyExtractor={item => item.id.toString()}
         renderItem={({ item }) => (
@@ -194,7 +194,7 @@ const ItemsList = () => {
             </View>
           </TouchableOpacity>
         )}
-      />
+        contentContainerStyle={{alignItems: 'center', justifyContent: 'center'}}/>
     </View>
   );
 };
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
   breadcrumbContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 16
   },
   breadcrumb: {
     paddingVertical: 4,
@@ -227,6 +227,8 @@ const styles = StyleSheet.create({
   breadcrumbText: {
     fontSize: 14,
     color: '#333',
+    fontFamily: 'Poppins_400Regular',
+    marginTop: 7
   },
   breadcrumbArrow: {
     fontSize: 14,
@@ -235,7 +237,7 @@ const styles = StyleSheet.create({
   },
   productCard: {
     backgroundColor: '#fff',
-    borderRadius: 8,
+    borderRadius: 20,
     overflow: 'hidden',
     marginBottom: 16,
     shadowColor: '#000',
@@ -243,7 +245,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 1 },
     shadowRadius: 4,
     elevation: 2,
-    width: '100%',
+    width: '99%',
   },
   imageContainer: {
     width: '100%',
@@ -257,16 +259,23 @@ const styles = StyleSheet.create({
   },
   productName: {
     fontSize: 16,
-    fontWeight: 'bold',
-    padding: 8,
+    fontFamily: 'Poppins_500Medium',
+    marginHorizontal: 15,
+    marginVertical: 10
   },
   productPrice: {
     fontSize: 14,
     color: '#666',
-    paddingVertical: 8,
-    paddingHorizontal: 8,
+    marginHorizontal: 15,
+    marginBottom: 10,
+    fontFamily: 'Poppins_400Regular'
   },
   flatListContent: {
     alignItems: 'center',
   },
+  flatList: {
+    width: '100%',
+    alignContent: 'center',
+    paddingBottom: 50
+  }
 });

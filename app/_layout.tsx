@@ -59,15 +59,13 @@ function AppNavigator() {
         headerTitle: 'Galleria Glamour',
         headerTitleAlign: 'center',
         headerTitleStyle: {
-          fontWeight: 'bold',
-          fontFamily: 'LeagueSpartan_400Regular'
+          fontFamily: 'BodoniModa_700Bold',        
         },
         headerRight: () => (
           <MaterialIcons
             name="language"
             size={24}
             color="black"
-            style={{ marginRight: 15 }}
             onPress={toggleLanguageModal}
           />
         ),

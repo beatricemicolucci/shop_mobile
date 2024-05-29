@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native'
 import React, { useContext, useState } from 'react'
-import { Tabs } from 'expo-router'
+import { Tabs, router } from 'expo-router'
 import { FontAwesome } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -11,6 +11,42 @@ import LanguageModal from '@/components/LanguageModal';
 import { LanguageContext, LanguageProvider } from '@/contexts/LanguageContext';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { LeagueSpartan_600SemiBold, useFonts, LeagueSpartan_800ExtraBold, LeagueSpartan_700Bold } from '@expo-google-fonts/league-spartan';
+import {
+  Poppins_100Thin,
+  Poppins_100Thin_Italic,
+  Poppins_200ExtraLight,
+  Poppins_200ExtraLight_Italic,
+  Poppins_300Light,
+  Poppins_300Light_Italic,
+  Poppins_400Regular,
+  Poppins_400Regular_Italic,
+  Poppins_500Medium,
+  Poppins_500Medium_Italic,
+  Poppins_600SemiBold,
+  Poppins_600SemiBold_Italic,
+  Poppins_700Bold,
+  Poppins_700Bold_Italic,
+  Poppins_800ExtraBold,
+  Poppins_800ExtraBold_Italic,
+  Poppins_900Black,
+  Poppins_900Black_Italic,
+} from '@expo-google-fonts/poppins';
+import {
+  BodoniModa_400Regular,
+  BodoniModa_500Medium,
+  BodoniModa_600SemiBold,
+  BodoniModa_700Bold,
+  BodoniModa_800ExtraBold,
+  BodoniModa_900Black,
+  BodoniModa_400Regular_Italic,
+  BodoniModa_500Medium_Italic,
+  BodoniModa_600SemiBold_Italic,
+  BodoniModa_700Bold_Italic,
+  BodoniModa_800ExtraBold_Italic,
+  BodoniModa_900Black_Italic,
+} from '@expo-google-fonts/bodoni-moda';
+import { Route } from 'expo-router/build/Route';
+
 
 export default function Layout() {
 
@@ -32,7 +68,22 @@ export default function Layout() {
   };
 
   let [fontsLoaded] = useFonts({
-    LeagueSpartan_700Bold  
+    LeagueSpartan_700Bold,
+    BodoniModa_400Regular,
+    BodoniModa_500Medium,
+    BodoniModa_600SemiBold,
+    BodoniModa_700Bold,
+    BodoniModa_800ExtraBold,
+    BodoniModa_900Black,
+    BodoniModa_400Regular_Italic,
+    BodoniModa_500Medium_Italic,
+    BodoniModa_600SemiBold_Italic,
+    BodoniModa_700Bold_Italic,
+    BodoniModa_800ExtraBold_Italic,
+    BodoniModa_900Black_Italic,
+    Poppins_600SemiBold,
+    Poppins_500Medium,
+    Poppins_300Light
   });
 
 
@@ -41,6 +92,7 @@ export default function Layout() {
       <Tabs screenOptions={{
           tabBarStyle: {
               backgroundColor: '#F0DDCB',
+              height: 60
           },
           tabBarShowLabel: false,
           tabBarActiveTintColor: Colors.black,
@@ -52,8 +104,7 @@ export default function Layout() {
           headerTitle: 'Galleria Glamour',
           headerTitleAlign: 'center',
           headerTitleStyle: {
-            fontFamily: 'LeagueSpartan_700Bold',
-            letterSpacing: 1.5
+            fontFamily: 'BodoniModa_700Bold',
           },
           headerRight: () => (
             <MaterialIcons

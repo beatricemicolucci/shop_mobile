@@ -16,6 +16,7 @@ interface HeaderData {
     attributes: {
       languages: [
         {
+          id: number,
           language: string,
           denUrl: string,
           flag: {
@@ -52,9 +53,8 @@ const LanguageModal: React.FC<LanguageModalProps> = ({ visible, onClose, onSelec
         <View style={styles.modalContainer}>
           <Text style={styles.modalTitle}>{headerData?.data.attributes.languageModalTitle}</Text>
           {headerData?.data.attributes.languages.map((language) => {
-            {console.log(language.flag.data.attributes.url)}
             return (
-              <TouchableOpacity onPress={() => { onSelectLanguage(language.denUrl) }} style={locale === language.denUrl ? styles.selectedLanguageOption : styles.languageOption}>
+              <TouchableOpacity key={language.id} onPress={() => { onSelectLanguage(language.denUrl) }} style={locale === language.denUrl ? styles.selectedLanguageOption : styles.languageOption}>
                 <View style={styles.optionContainer}>
                   <Image source={{ uri: `http://172.20.10.3:1337${language.flag.data.attributes.url}`}} style={styles.flagImage}/>
                   <Text style={styles.languageText}>{language.language}</Text>
@@ -88,8 +88,8 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     width: '100%',
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 16,
+    fontFamily: 'Poppins_500Medium',
     marginBottom: 20,
     textAlign: 'center',
   },
@@ -99,18 +99,20 @@ const styles = StyleSheet.create({
   },
   languageText: {
     fontSize: 16,
+    fontFamily: 'Poppins_400Regular'
   },
   closeButton: {
     marginTop: 20,
-    padding: 10,
+    padding: 7,
     backgroundColor: '#49516c',
     borderRadius: 30,
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   closeButtonText: {
     color: 'white',
     fontSize: 16,
-    paddingHorizontal: 5
+    paddingHorizontal: 5,
+    fontFamily: 'Poppins_400Regular'
   },
   flagImage: {
     width: 30,

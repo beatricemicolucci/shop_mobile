@@ -5,6 +5,7 @@ import useFetch from '@/hooks/useFetch';
 import { Fontisto } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome6 } from '@expo/vector-icons';
+import { ScrollView } from 'react-native-gesture-handler';
 
 interface ContactsData {
   data: {
@@ -22,6 +23,7 @@ interface ContactsFields {
       telephone: string;
       headquarters: string;
       email: string;
+      title: string;
     }
   }
 }
@@ -37,33 +39,24 @@ const Page = () => {
 
   return (
       <View style={styles.container}>
-        <View style={styles.card}>
-          <View style={styles.iconContainer}>
-            <Fontisto name="phone" size={35} color="black" />
+        <Text style={styles.title}>{contactsFields?.data.attributes.title}</Text>
+        <ScrollView style={styles.scrollview} contentContainerStyle={{alignItems: 'center'}}>
+          <View style={styles.card}>
+              <Fontisto name="phone" size={35} color="black" style={styles.iconContainer}/>
+              <Text style={styles.field}>{`${contactsFields?.data?.attributes?.telephone}`.toUpperCase()}</Text>
+              <Text style={styles.data}>{contactsData?.data?.attributes?.telephone}</Text>
           </View>
-          <View style={styles.textContainer}>
-            <Text style={styles.field}>{`${contactsFields?.data?.attributes?.telephone}`.toUpperCase()}</Text>
-            <Text style={styles.data}>{contactsData?.data?.attributes?.telephone}</Text>
+          <View style={styles.card}>
+              <Ionicons name="mail" size={35} color="black" style={styles.iconContainer}/>
+              <Text style={styles.field}>{`${contactsFields?.data?.attributes?.email}`.toUpperCase()}</Text>
+              <Text style={styles.data}>{contactsData?.data?.attributes?.email}</Text>
+            </View>
+          <View style={styles.card}>
+              <FontAwesome6 name="map-location-dot" size={35} color="black" style={styles.iconContainer}/>
+              <Text style={styles.field}>{`${contactsFields?.data?.attributes?.headquarters}`.toUpperCase()}</Text>
+              <Text style={styles.data}>{contactsData?.data?.attributes?.headquarters}</Text>
           </View>
-        </View>
-        <View style={styles.card}>
-          <View style={styles.iconContainer}>
-            <Ionicons name="mail" size={35} color="black" />
-          </View>
-          <View style={styles.textContainer}>
-            <Text style={styles.field}>{`${contactsFields?.data?.attributes?.email}`.toUpperCase()}</Text>
-            <Text style={styles.data}>{contactsData?.data?.attributes?.email}</Text>
-          </View>
-          </View>
-        <View style={styles.card}>
-          <View style={styles.iconContainer}>
-            <FontAwesome6 name="map-location-dot" size={35} color="black" />
-          </View>
-          <View style={styles.textContainer}>
-            <Text style={styles.field}>{`${contactsFields?.data?.attributes?.headquarters}`.toUpperCase()}</Text>
-            <Text style={styles.data}>{contactsData?.data?.attributes?.headquarters}</Text>
-          </View>
-          </View>
+        </ScrollView>
       </View>
   )
 }
@@ -73,35 +66,41 @@ export default Page
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     width: '100%',
   },
   card: {
-    width: '90%',
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
     padding: 20,
     backgroundColor: '#fff',
-    borderRadius: 10,
+    borderRadius: 30,
     elevation: 5,
-    marginVertical: 10
+    marginVertical: 10,
+    width: '80%'
   },
   iconContainer: {
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    marginRight: 5,
-    padding: 15
+    margin: 10,
   },
   textContainer: {
     padding: 10,
     paddingRight: 20,
   },
   field: {
-    fontWeight: 'bold',
+    fontFamily: 'Poppins_500Medium',
     fontSize: 20
   },
   data: {
-    fontStyle: 'italic'
+    fontFamily: 'Poppins_300Light'
+  },
+  title: {
+    fontFamily: 'Poppins_600SemiBold',
+    fontSize: 18,
+    marginTop: 25
+  },
+  scrollview: {
+    width: '100%',
   }
 })

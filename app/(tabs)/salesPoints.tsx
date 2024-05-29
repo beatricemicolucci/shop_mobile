@@ -137,7 +137,7 @@ const Page = () => {
         ))}
       </View>
     </ScrollView>
-      )
+  )
 }
 
 export default Page
@@ -155,19 +155,21 @@ const styles = StyleSheet.create({
     },
     caption: {
       marginLeft: 10,
-      fontSize: 16,
-      fontWeight: 'bold',
+      fontSize: 14,
+      fontFamily: 'Poppins_500Medium'
     },
     salesPointsContainer: {
       flex: 1,
     },
     card: {
-      borderRadius: 10,
+      borderRadius: 20,
       overflow: 'hidden',
       marginBottom: 15,
+      padding: 20
     },
     imageContainer: {
       position: 'relative',
+      borderRadius: 20
     },
     image: {
       width: '100%',
@@ -179,23 +181,25 @@ const styles = StyleSheet.create({
       left: 0,
       right: 0,
       bottom: 0,
-      backgroundColor: 'rgba(0, 0, 0, 0.25)',
+      backgroundColor: 'rgba(0, 0, 0, 0.10)',
     },
     cardContent: {
       padding: 10,
     },
     region: {
       fontSize: 18,
-      fontWeight: 'bold',
+      fontFamily: 'Poppins_500Medium',
       textTransform: 'uppercase',
       marginBottom: 5,
     },
     location: {
-      fontSize: 16,
+      fontSize: 14,
       marginBottom: 5,
+      fontFamily: 'Poppins_400Regular'
     },
     telephone: {
       fontSize: 14,
       color: 'gray',
+      fontFamily: 'Poppins_400Regular'
     },
 })

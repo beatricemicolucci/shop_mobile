@@ -42,17 +42,17 @@ const Page = () => {
         <Text style={styles.title}>{contactsFields?.data.attributes.title}</Text>
         <ScrollView style={styles.scrollview} contentContainerStyle={{alignItems: 'center'}}>
           <View style={styles.card}>
-              <Fontisto name="phone" size={35} color="black" style={styles.iconContainer}/>
+              <Fontisto name="phone" size={30} color="#434343" style={styles.iconContainer}/>
               <Text style={styles.field}>{`${contactsFields?.data?.attributes?.telephone}`.toUpperCase()}</Text>
               <Text style={styles.data}>{contactsData?.data?.attributes?.telephone}</Text>
           </View>
           <View style={styles.card}>
-              <Ionicons name="mail" size={35} color="black" style={styles.iconContainer}/>
+              <Ionicons name="mail" size={30} color="#434343" style={styles.iconContainer}/>
               <Text style={styles.field}>{`${contactsFields?.data?.attributes?.email}`.toUpperCase()}</Text>
               <Text style={styles.data}>{contactsData?.data?.attributes?.email}</Text>
             </View>
           <View style={styles.card}>
-              <FontAwesome6 name="map-location-dot" size={35} color="black" style={styles.iconContainer}/>
+              <FontAwesome6 name="map-location-dot" size={30} color="#434343" style={styles.iconContainer}/>
               <Text style={styles.field}>{`${contactsFields?.data?.attributes?.headquarters}`.toUpperCase()}</Text>
               <Text style={styles.data}>{contactsData?.data?.attributes?.headquarters}</Text>
           </View>
@@ -70,16 +70,17 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     width: '100%',
+    backgroundColor: '#EAE3DF',
   },
   card: {
     flexDirection: 'column',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#D4A690',
     borderRadius: 30,
     elevation: 5,
     marginVertical: 10,
-    width: '80%'
+    width: '70%',
   },
   iconContainer: {
     margin: 10,
@@ -90,17 +91,23 @@ const styles = StyleSheet.create({
   },
   field: {
     fontFamily: 'Poppins_500Medium',
-    fontSize: 20
+    fontSize: 18,
+    color: '#434343'
   },
   data: {
-    fontFamily: 'Poppins_300Light'
+    fontFamily: 'Poppins_300Light',
+    fontSize: 12,
+    color: '#434343'
   },
   title: {
-    fontFamily: 'Poppins_600SemiBold',
-    fontSize: 18,
-    marginTop: 25
+    color: '#434343',
+    fontFamily: 'Poppins_500Medium',
+    fontSize: 20,
+    textAlign: 'center',
+    marginTop: 30
   },
   scrollview: {
     width: '100%',
+    marginBottom: 20
   }
 })

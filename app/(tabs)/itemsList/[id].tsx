@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, ActivityIndicator, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, ActivityIndicator, FlatList, TouchableOpacity, Dimensions } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { LanguageContext } from '@/contexts/LanguageContext';
 import useFetch from '@/hooks/useFetch';
@@ -177,15 +177,16 @@ const ItemsList = () => {
       </View>
       <FlatList
         style={styles.flatList}
+        numColumns={1}
         data={subCategory?.attributes?.products?.data || []}
         keyExtractor={item => item.id.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={ () => router.push({
+          <TouchableOpacity key={item.id} onPress={ () => router.push({
               pathname: ".././itemDetails/[id]",
               params: { id: item.id },
             })}
           >
-            <View style={styles.productCard}>
+            <View style={styles.productCard} >
               <View style={styles.imageContainer}>
                 <Image source={{ uri: getImage(item.id) || 'placeholder_image_url' }} style={styles.image} />
               </View>
@@ -194,7 +195,7 @@ const ItemsList = () => {
             </View>
           </TouchableOpacity>
         )}
-        contentContainerStyle={{alignItems: 'center', justifyContent: 'center'}}/>
+        contentContainerStyle={styles.flatListContent}/>
     </View>
   );
 };
@@ -206,6 +207,8 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     paddingHorizontal: 25,
+    justifyContent: 'center',
+    alignContent: 'center'
   },
   loaderContainer: {
     flex: 1,
@@ -245,7 +248,11 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 1 },
     shadowRadius: 4,
     elevation: 2,
-    width: '99%',
+    flex: 1,
+    margin:1,
+    width: '70%',
+    alignSelf: 'center'
+   
   },
   imageContainer: {
     width: '100%',
@@ -258,24 +265,28 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   productName: {
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: 'Poppins_500Medium',
     marginHorizontal: 15,
     marginVertical: 10
   },
   productPrice: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#666',
     marginHorizontal: 15,
     marginBottom: 10,
     fontFamily: 'Poppins_400Regular'
   },
   flatListContent: {
-    alignItems: 'center',
+    marginHorizontal: 0,
+    width: '100%',
+    alignContent: 'center',
+    justifyContent: 'center'
+
   },
   flatList: {
     width: '100%',
     alignContent: 'center',
-    paddingBottom: 50
+    paddingBottom: 50,
   }
 });

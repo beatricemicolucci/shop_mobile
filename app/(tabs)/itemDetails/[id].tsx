@@ -327,6 +327,7 @@ const Page = () => {
 
  
   const colors = product?.attributes?.product_colors?.data.map((pc) => ({
+    key: getProductColor(pc?.id)?.attributes?.color?.data?.id,
     name: getProductColor(pc?.id)?.attributes?.color?.data?.attributes?.codiceEsadecimale,
     value: getProductColor(pc?.id)?.attributes?.color?.data?.attributes?.codiceEsadecimale,
   }));
@@ -367,43 +368,36 @@ const Page = () => {
           { selectedColor && <Image source={{ uri: imagesByColor[selectedColor] || 'placeholder_image_url' }} style={styles.image} />}
         </View>
         <View style={styles.detailsContainer}>
-          <View style={styles.titleContainer}>
-            <View style={styles.titleAndPrice}>
-              <Text style={styles.productName}>{product.attributes.name}</Text>
-              <Text style={styles.productPrice}>{product.attributes.price}.00$</Text>
-            </View>
+            <Text style={styles.productName}>{product.attributes.name}</Text>
+            <Text style={styles.productPrice}>{product.attributes.price}.00$</Text>
+            <Text style={styles.sectionTitle}>{pageResult?.data.attributes.colorsTitle}</Text>
             <View style={styles.colors}>
-                {colors.map((color) => (
-                  <TouchableOpacity 
-                    key = {color.name}
-                    onPress={() => {
-                      setSelectedColor(color.value);
-                    }}
-                    style={{
-                      height: selectedColor === color.value ? 40 : 35,
-                      width: selectedColor === color.value ? 40 : 35,
-                      borderRadius: 50,
-                      margin: 5,
-                      borderWidth: 1,
-                      borderColor: 'gray',
-                      backgroundColor: color.name,
-                      shadowColor: selectedColor === color.value ? "#000" : "#FFF",
-                      shadowOffset: {
-                        width: 0,
-                        height: 2,
-                      },
-                      shadowOpacity: 0.25,
-                      shadowRadius: 3.84,
-                      elevation: 5,
-                    }}
-                  />
-                ))}
-            </View>
+              {colors.map((color) => (
+                <TouchableOpacity 
+                  key = {color.name}
+                  onPress={() => {
+                    setSelectedColor(color.value);
+                  }}
+                  style={{
+                    height: selectedColor === color.value ? 40 : 35,
+                    width: selectedColor === color.value ? 40 : 35,
+                    borderRadius: 50,
+                    margin: 5,
+                    borderWidth: 1,
+                    borderColor: 'gray',
+                    backgroundColor: color.name,
+                    shadowColor: selectedColor === color.value ? "#000" : "#FFF",
+                    shadowOffset: {
+                      width: 0,
+                      height: 2,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.84,
+                    elevation: 5,
+                  }}
+                />
+              ))}
           </View>
-          
-          
-          <Text style={styles.sectionTitle}>{pageResult?.data?.attributes?.descriptionTitle}</Text>
-          <Text style={styles.productDescription}>{product.attributes.description}</Text>
           <Text style={styles.sectionTitle}>{pageResult?.data?.attributes?.sizesTitle}</Text>
           <View style={styles.sizesContainer}>
             {product.attributes.size.map((size, index) => (
@@ -412,6 +406,10 @@ const Page = () => {
               </View>
             ))}
           </View>
+          
+          <Text style={styles.sectionTitle}>{pageResult?.data?.attributes?.descriptionTitle}</Text>
+          <Text style={styles.productDescription}>{product.attributes.description}</Text>
+          
           {product.attributes.product_colors.data.map((pc) => {
             const color = getProductColor(pc?.id)?.attributes?.color?.data?.attributes?.codiceEsadecimale;
             if (color === selectedColor && getProductColor(pc?.id)?.attributes?.object?.data) {
@@ -485,7 +483,6 @@ const styles = StyleSheet.create({
   productPrice: {
     fontSize: 14,
     color: '#888888',
-    marginBottom: 16,
     fontFamily: 'Poppins_400Regular'
   },
   sectionTitle: {

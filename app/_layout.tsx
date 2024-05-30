@@ -6,6 +6,7 @@ import { LanguageProvider, LanguageContext } from "@/contexts/LanguageContext";
 import LanguageModal from '@/components/LanguageModal';
 import { useFonts, LeagueSpartan_400Regular, LeagueSpartan_600SemiBold, LeagueSpartan_700Bold } from '@expo-google-fonts/league-spartan';
 import AppLoading from 'expo-app-loading';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -30,7 +31,9 @@ export default function RootLayout() {
 
   return (
     <LanguageProvider>
+      <GestureHandlerRootView style={{ flex:1 }}>
       <AppNavigator />
+      </GestureHandlerRootView>
     </LanguageProvider>
   );
 }
@@ -71,8 +74,6 @@ function AppNavigator() {
         ),
       }}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="itemsList/[id]" />
-        <Stack.Screen name="itemDetails/[id]" />
       </Stack>
     <LanguageModal
       visible={isLanguageModalVisible}

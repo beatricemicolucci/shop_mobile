@@ -10,7 +10,7 @@ import MenuModal from '@/components/menuModal';
 import LanguageModal from '@/components/LanguageModal';
 import { LanguageContext, LanguageProvider } from '@/contexts/LanguageContext';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { LeagueSpartan_600SemiBold, useFonts, LeagueSpartan_800ExtraBold, LeagueSpartan_700Bold } from '@expo-google-fonts/league-spartan';
+import { LeagueSpartan_600SemiBold, useFonts, LeagueSpartan_800ExtraBold, LeagueSpartan_700Bold, LeagueSpartan_500Medium } from '@expo-google-fonts/league-spartan';
 import {
   Poppins_100Thin,
   Poppins_100Thin_Italic,
@@ -46,6 +46,7 @@ import {
   BodoniModa_900Black_Italic,
 } from '@expo-google-fonts/bodoni-moda';
 import { Route } from 'expo-router/build/Route';
+import { Ionicons } from '@expo/vector-icons';
 
 
 export default function Layout() {
@@ -83,7 +84,9 @@ export default function Layout() {
     BodoniModa_900Black_Italic,
     Poppins_600SemiBold,
     Poppins_500Medium,
-    Poppins_300Light
+    Poppins_300Light,
+    Poppins_400Regular,
+    LeagueSpartan_500Medium
   });
 
 
@@ -92,11 +95,17 @@ export default function Layout() {
       <Tabs screenOptions={{
           tabBarStyle: {
               backgroundColor: '#F0DDCB',
-              height: 60
+              height: 60,
           },
-          tabBarShowLabel: false,
+          tabBarShowLabel: true,
           tabBarActiveTintColor: Colors.black,
-          tabBarInactiveTintColor: '999',
+          tabBarInactiveTintColor: '#434343',
+          tabBarLabelStyle: {
+            marginBottom: 5
+          },
+          tabBarIconStyle: {
+            marginTop: 10
+          },
           headerTintColor: 'black',
           headerStyle: {
             backgroundColor: '#F0DDCB',
@@ -106,28 +115,20 @@ export default function Layout() {
           headerTitleStyle: {
             fontFamily: 'BodoniModa_700Bold',
           },
-          headerRight: () => (
-            <MaterialIcons
-              name="language"
-              size={24}
-              color="black"
-              style={{ marginRight: 15 }}
-              onPress={toggleLanguageModal}
-            />
-          ),
       }}>
-          <Tabs.Screen name='index' options={{tabBarIcon: ({color}) => (
-              <FontAwesome name="home" size={24} color={color} />
+          <Tabs.Screen name='index' options={{ title:"Home", tabBarIcon: ({color}) => (
+              <FontAwesome name="home" size={22} color={color} />
           )}}/>
-          <Tabs.Screen name='salesPoints' options={{tabBarIcon: ({color}) => (
-              <FontAwesome5 name="map-pin" size={24} color={color} />
+          <Tabs.Screen name='salesPoints' options={{title:"Sales Points", tabBarIcon: ({color}) => (
+              <FontAwesome5 name="map-pin" size={20} color={color} />
           )}}/>
-          <Tabs.Screen name='contacts' options={{tabBarIcon: ({color}) => (
-              <MaterialCommunityIcons name="email" size={24} color={color} />
+          <Tabs.Screen name='menu' options={{href: null}} />
+          <Tabs.Screen name='settings' options={{title:"Settings", tabBarIcon: ({color}) => (
+              <Ionicons name="settings-sharp" size={22} color={color} />
           )}}/>
-          <Tabs.Screen name='menu' options={{tabBarIcon: ({color}) => (
-            <MaterialIcons name="menu" size={24} color={color} />
-          )}}/>
+          <Tabs.Screen name='itemsList/[id]' options={{href: null}}/>
+          <Tabs.Screen name='itemDetails/[id]' options={{href: null}} />
+          <Tabs.Screen name='contacts' options={{href: null}} />
           {/*<Tabs.Screen 
               name='menu' 
               listeners={{
@@ -151,6 +152,6 @@ export default function Layout() {
             setLocale(language);
           }}
         />
-    </GestureHandlerRootView>
+        </GestureHandlerRootView>
   )
 }

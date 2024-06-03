@@ -38,7 +38,7 @@ const LanguageModal: React.FC<LanguageModalProps> = ({ visible, onClose, onSelec
   const languageContext = useContext(LanguageContext);
   const locale = languageContext?.locale;
 
-  const contactsDataApiUrl = `http://172.20.10.3:1337/api/header?locale=${locale}&populate[0]=languages&populate[1]=languages.flag`;
+  const contactsDataApiUrl = `http://192.168.1.102:1337/api/header?locale=${locale}&populate[0]=languages&populate[1]=languages.flag`;
   const { loading: loadingData, error: errorData, data: headerData } = useFetch<HeaderData>(contactsDataApiUrl);
 
 
@@ -56,7 +56,7 @@ const LanguageModal: React.FC<LanguageModalProps> = ({ visible, onClose, onSelec
             return (
               <TouchableOpacity key={language.id} onPress={() => { onSelectLanguage(language.denUrl) }} style={locale === language.denUrl ? styles.selectedLanguageOption : styles.languageOption}>
                 <View style={styles.optionContainer}>
-                  <Image source={{ uri: `http://172.20.10.3:1337${language.flag.data.attributes.url}`}} style={styles.flagImage}/>
+                  <Image source={{ uri: `http://192.168.1.102:1337${language.flag.data.attributes.url}`}} style={styles.flagImage}/>
                   <Text style={styles.languageText}>{language.language}</Text>
                   {locale === language.denUrl ? <MaterialIcons name="done" size={20} color="black" style={styles.selectedIcon} /> : ''}
                 </View>

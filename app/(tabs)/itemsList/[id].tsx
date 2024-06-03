@@ -103,14 +103,18 @@ interface SubCategoriesResult {
   data: SubCategoryData[];
 }
 
+interface GridItemProps {
+  item: ProductData;
+}
+
 const ItemsList = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const languageContext = useContext(LanguageContext);
   const locale = languageContext?.locale;
 
-  const subcategoriesApiUrl = `http://172.20.10.3:1337/api/sub-categories?locale=all&populate=*&pagination[pageSize]=100`;
+  const subcategoriesApiUrl = `http://192.168.1.102:1337/api/sub-categories?locale=all&populate=*&pagination[pageSize]=100`;
   const { loading: subcategoriesLoading, error: subcategoriesError, data: subcategoriesResult } = useFetch<SubCategoriesResult>(subcategoriesApiUrl);
-  const productsApiUrl = `http://172.20.10.3:1337/api/products?locale=all&populate=*&pagination[pageSize]=100`;
+  const productsApiUrl = `http://192.168.1.102:1337/api/products?locale=all&populate=*&pagination[pageSize]=100`;
   const { loading: productsLoading, error: productsError, data: productsData } = useFetch<ProductsApiResponse>(productsApiUrl);
 
   if (subcategoriesLoading || productsLoading) {
@@ -157,7 +161,7 @@ const ItemsList = () => {
   const getImage = (productId: number): string | null => {
     const product = productsData?.data.find((product: ProductData) => product.id === productId);
     if (product && product.attributes.image && product.attributes.image.data.length > 0) {
-      return `http://172.20.10.3:1337${product.attributes.image.data[0].attributes.url}`
+      return `http://192.168.1.102:1337${product.attributes.image.data[0].attributes.url}`
     }
     return null;
   };
@@ -168,6 +172,22 @@ const ItemsList = () => {
     </TouchableOpacity>
   );
 
+  const GridItem: React.FC<GridItemProps> = ({ item }) => (
+      <TouchableOpacity style={styles.itemContainer} key={item.id} onPress={ () => router.push({
+          pathname: ".././itemDetails/[id]",
+          params: { id: item.id },
+        })}
+      >
+        <View style={styles.imageContainer}>
+          <Image source={{ uri: getImage(item.id) || 'placeholder_image_url' }} style={styles.itemImage} />
+        </View>
+        <Text style={styles.productName}>{item.attributes.name}</Text>
+        <Text style={styles.productPrice}>Price: {item.attributes.price}$</Text>
+    </TouchableOpacity>
+  );
+
+  const numColumns = 2;
+
   return (
     <View style={styles.container}>
       <View style={styles.breadcrumbContainer}>
@@ -176,6 +196,13 @@ const ItemsList = () => {
         <Breadcrumb text={subCategory?.attributes?.nome}/>
       </View>
       <FlatList
+        data={subCategory?.attributes?.products?.data || []}
+        renderItem={({ item }) => <GridItem item={item} />}
+        keyExtractor={item => item.id.toString()}
+        numColumns={numColumns}
+        contentContainerStyle={styles.grid}
+      />
+      {/*<FlatList
         style={styles.flatList}
         numColumns={1}
         data={subCategory?.attributes?.products?.data || []}
@@ -195,7 +222,7 @@ const ItemsList = () => {
             </View>
           </TouchableOpacity>
         )}
-        contentContainerStyle={styles.flatListContent}/>
+      contentContainerStyle={styles.flatListContent}/>*/}
     </View>
   );
 };
@@ -288,5 +315,27 @@ const styles = StyleSheet.create({
     width: '100%',
     alignContent: 'center',
     paddingBottom: 50,
-  }
+  },
+  itemContainer: {
+    flex: 1,
+    margin: 10,
+    backgroundColor: '#f9f9f9',
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
+    
+  },
+  grid: {
+    justifyContent: 'center',
+  },
+  itemImage: {
+    width: '100%',
+    aspectRatio: 1/1,
+    resizeMode: 'cover',
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10
+  },
 });

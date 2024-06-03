@@ -115,6 +115,14 @@ export default function Layout() {
           headerTitleStyle: {
             fontFamily: 'BodoniModa_700Bold',
           },
+          headerLeft: (Route.name != 'index' && router.canGoBack()) ? () => (
+            <Ionicons
+              name="arrow-back"
+              size={24}
+              color="black"
+              onPress={() => router.back()}
+            />
+          ) : undefined,
       }}>
           <Tabs.Screen name='index' options={{ title:"Home", tabBarIcon: ({color}) => (
               <FontAwesome name="home" size={22} color={color} />

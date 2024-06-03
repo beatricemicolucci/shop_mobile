@@ -54,9 +54,9 @@ const Page = () => {
   const languageContext = useContext(LanguageContext);
   const locale = languageContext?.locale;
   
-  const categoriesApiUrl = `http://172.20.10.3:1337/api/categories?locale=${locale}&populate=*`;
+  const categoriesApiUrl = `http://192.168.1.102:1337/api/categories?locale=${locale}&populate=*`;
   const { loading: loadingCategories, error: errorcategories, data: categoriesData } = useFetch<CategoriesData>(categoriesApiUrl);
-  const menuApiUrl = `http://172.20.10.3:1337/api/categories-menu?locale=${locale}&populate=*`;
+  const menuApiUrl = `http://192.168.1.102:1337/api/categories-menu?locale=${locale}&populate=*`;
   const { loading: menuLoading, error: menuError, data: menuData } = useFetch<MenuData>(menuApiUrl);
 
   const handleSubCategoryPress = (subCategoryId: number) => {
@@ -71,7 +71,7 @@ const Page = () => {
           {categoriesData?.data.map((category) => {
             return (
               <View key={category.id} style={styles.categoryContainer}>
-                <Image source={{ uri: `http://172.20.10.3:1337${category.attributes.cover.data[0].attributes.url}`}} style={styles.cover}/>
+                <Image source={{ uri: `http://192.168.1.102:1337${category.attributes.cover.data[0].attributes.url}`}} style={styles.cover}/>
                 <ScrollView horizontal={true} style={styles.subCategoriesContainer}>
                     {category.attributes.sub_categories.data.map(subCategory => (
                       <TouchableOpacity key={subCategory.id} onPress={() => handleSubCategoryPress(subCategory.id)} style={styles.subCategory}>

@@ -1,8 +1,7 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
-import React, { useContext, useState } from 'react'
+import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native';
+import React, { useContext, useState, useEffect } from 'react';
 import { LanguageContext } from '@/contexts/LanguageContext';
 import useFetch from '@/hooks/useFetch';
-import { ScrollView } from 'react-native-gesture-handler';
 import { router } from 'expo-router';
 
 interface SubCategoryAttributes {
@@ -22,13 +21,13 @@ interface CategoriesAttributes {
   cover: {
     data: [
       {
-        id: number,
+        id: number;
         attributes: {
-          url: string
+          url: string;
         }
       }
-    ]
-  }
+    ];
+  };
   sub_categories: {
     data: SubCategoryData[];
   };
@@ -37,8 +36,8 @@ interface CategoriesAttributes {
 interface CategoriesData {
   data: [{
     id: number;
-    attributes: CategoriesAttributes
-  }]
+    attributes: CategoriesAttributes;
+  }];
 }
 
 interface MenuData {
@@ -46,21 +45,27 @@ interface MenuData {
     attributes: {
       title: string;
     }
-  }
+  };
+}
+
+interface GridItemProps {
+  item: SubCategoryData;
 }
 
 const Page = () => {
-
   const languageContext = useContext(LanguageContext);
   const locale = languageContext?.locale;
-  
-  const categoriesApiUrl = `http://172.20.10.3:1337/api/categories?locale=${locale}&populate=*`;
-  const { loading: loadingCategories, error: errorcategories, data: categoriesData } = useFetch<CategoriesData>(categoriesApiUrl);
-  const menuApiUrl = `http://172.20.10.3:1337/api/categories-menu?locale=${locale}&populate=*`;
-  const { loading: menuLoading, error: menuError, data: menuData } = useFetch<MenuData>(menuApiUrl);
-  
 
-  const [selectedCategoryId, setSelectedCategoryId] = useState<number>((locale && locale === 'en') ? 4 : 3);
+  const categoriesApiUrl = `http://192.168.1.101:1337/api/categories?locale=${locale}&populate=*`;
+  const { loading: loadingCategories, error: errorcategories, data: categoriesData } = useFetch<CategoriesData>(categoriesApiUrl);
+  const menuApiUrl = `http://192.168.1.101:1337/api/categories-menu?locale=${locale}&populate=*`;
+  const { loading: menuLoading, error: menuError, data: menuData } = useFetch<MenuData>(menuApiUrl);
+
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number>(locale && locale === 'it-IT' ? 3 : 4);
+
+  useEffect(() => {
+    setSelectedCategoryId(locale && locale === 'it-IT' ? 3 : 4);
+  }, [locale]);
 
   const handleCategoryPress = (categoryId: number) => {
     setSelectedCategoryId(categoryId);
@@ -70,12 +75,22 @@ const Page = () => {
     router.push({
       pathname: ".././itemsList/[id]",
       params: { id: subCategoryId },
-    })
+    });
   };
 
-    return (
-      <View style={styles.container}>
-        <View style={styles.buttonsContainer}>
+  const GridItem: React.FC<GridItemProps> = ({ item }) => (
+    <View style={styles.itemContainer}>
+      <TouchableOpacity key={item.id} onPress={() => handleSubCategoryPress(item.id)}>
+        <Text style={styles.itemText}>{`${item.attributes.nome}`.toUpperCase()}</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+  const numColumns = 2;
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.buttonsContainer}>
         {categoriesData?.data.map((category) => (
           <TouchableOpacity
             key={category.id}
@@ -91,55 +106,32 @@ const Page = () => {
           </TouchableOpacity>
         ))}
       </View>
-      <ScrollView style={styles.contentContainer}>
+      <View style={styles.contentContainer}>
         {categoriesData?.data.map((category) => {
           if (selectedCategoryId === category.id) {
             return (
               <View key={category.id} style={styles.categoryContent}>
                 <Image
-                  source={{ uri: `http://172.20.10.3:1337${category.attributes.cover.data[0].attributes.url}` }}
+                  source={{ uri: `http://192.168.1.101:1337${category.attributes.cover.data[0].attributes.url}` }}
                   style={styles.cover}
                 />
-                <ScrollView horizontal={true} style={styles.subCategoriesContainer}>
-                  {category.attributes.sub_categories.data.map((subCategory) => (
-                    <TouchableOpacity
-                      key={subCategory.id}
-                      onPress={() => handleSubCategoryPress(subCategory.id)}
-                      style={styles.subCategory}
-                    >
-                      <Text style={styles.subCategoryText}>
-                        {subCategory.attributes.nome.toUpperCase()}
-                      </Text>
-                    </TouchableOpacity>
-                  ))}
-                </ScrollView>
+                <FlatList
+                  data={category.attributes.sub_categories.data}
+                  renderItem={({ item }) => <GridItem item={item} />}
+                  numColumns={numColumns}
+                  contentContainerStyle={styles.grid}
+                />
               </View>
             );
           }
           return null;
         })}
-      </ScrollView>
       </View>
-       /* <View style={styles.container}>
-          {categoriesData?.data.map((category) => {
-            return (
-              <View key={category.id} style={styles.categoryContainer}>
-                <Image source={{ uri: `http://172.20.10.3:1337${category.attributes.cover.data[0].attributes.url}`}} style={styles.cover}/>
-                <ScrollView horizontal={true} style={styles.subCategoriesContainer}>
-                    {category.attributes.sub_categories.data.map(subCategory => (
-                      <TouchableOpacity key={subCategory.id} onPress={() => handleSubCategoryPress(subCategory.id)} style={styles.subCategory}>
-                        <Text style={styles.subCategoryText}>{`${subCategory.attributes.nome}`.toUpperCase()}</Text>
-                      </TouchableOpacity>
-                    ))}
-                </ScrollView>
-              </View>
-            )
-          })}
-        </View>*/
-      )
-}
+    </View>
+  );
+};
 
-export default Page
+export default Page;
 
 const styles = StyleSheet.create({
   container: {
@@ -152,7 +144,7 @@ const styles = StyleSheet.create({
   },
   cover: {
     width: '100%',
-    aspectRatio: 1/1,
+    aspectRatio: 1 / 1,
     resizeMode: 'cover',
   },
   subCategory: {
@@ -165,31 +157,64 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: 'rgba(0,0,0,0.8)',
     fontFamily: 'LeagueSpartan_400Regular',
-    letterSpacing: 1.2
+    letterSpacing: 1.2,
   },
   subCategoriesContainer: {
     paddingVertical: 15,
     paddingTop: 10,
-    marginBottom: 10
+    marginBottom: 10,
   },
   buttonsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    width: '100%'
+    width: '100%',
   },
   categoryButton: {
-    padding: 15
+    padding: 15,
   },
   selectedCategoryButtonText: {
     fontSize: 16,
     color: 'rgba(0,0,0,1)',
     fontFamily: 'LeagueSpartan_500Medium',
-    letterSpacing: 1.2
+    letterSpacing: 1.2,
   },
   categoryButtonText: {
     fontSize: 16,
     color: 'rgba(0,0,0,0.7)',
     fontFamily: 'LeagueSpartan_500Medium',
-    letterSpacing: 1.2
-  }
-})
+    letterSpacing: 1.2,
+  },
+  contentContainer: {
+    flex: 1,
+    padding: 0,
+  },
+  categoryContent: {
+    marginBottom: 20,
+  },
+  itemContainer: {
+    flex: 1,
+    margin: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#f6f3f1',
+    borderRadius: 25,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.6,
+    shadowRadius: 3,
+    elevation: 3,
+    padding: 5,
+    borderColor: '#EAE3DF',
+    borderWidth: 1,
+  },
+  itemText: {
+    fontSize: 13,
+    color: 'rgba(0,0,0,0.8)',
+    fontFamily: 'LeagueSpartan_400Regular',
+    letterSpacing: 1.2,
+  },
+  grid: {
+    justifyContent: 'center',
+    padding: 10,
+  },
+});

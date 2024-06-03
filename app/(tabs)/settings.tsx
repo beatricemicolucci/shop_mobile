@@ -30,7 +30,7 @@ const Page = () => {
       }
     const { setLocale } = languageContext;
 
-    const pageApiUrl = `http://172.20.10.3:1337/api/settings-page?locale=${locale}`
+    const pageApiUrl = `http://192.168.1.102:1337/api/settings-page?locale=${locale}`
     const {loading: loading, error: error, data: pageData} = useFetch<PageData>(pageApiUrl)
 
     const toggleLanguageModal = () => {

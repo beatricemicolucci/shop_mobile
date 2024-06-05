@@ -5,6 +5,7 @@ import { LanguageContext } from '@/contexts/LanguageContext';
 import useFetch from '@/hooks/useFetch';
 import RadioGroup, {RadioButtonProps} from 'react-native-radio-buttons-group';
 import { useSharedValue, useAnimatedStyle} from 'react-native-reanimated';
+import Model3DModal from '@/components/Model3DModal';
 
 
 interface LocalizationAttributes {
@@ -236,15 +237,15 @@ const Page = () => {
   const languageContext = useContext(LanguageContext);
   const locale = languageContext?.locale;
 
-  const productsApiUrl = `http://192.168.1.102:1337/api/products?locale=all&populate=*&pagination[pageSize]=100`;
+  const productsApiUrl = `http://172.16.11.121:1337/api/products?locale=all&populate=*&pagination[pageSize]=100`;
   const { loading: productsLoading, error: productsError, data: productsResult } = useFetch<ProductsResult>(productsApiUrl);
-  const productsColorsApiUrl = `http://192.168.1.102:1337/api/product-colors?locale=all&populate=*&pagination[pageSize]=100`;
+  const productsColorsApiUrl = `http://172.16.11.121:1337/api/product-colors?locale=all&populate=*&pagination[pageSize]=100`;
   const { loading: productsColorsLoading, error: productsColorsError, data: productsColorsResult } = useFetch<ProductsColorsResult>(productsColorsApiUrl);
-  const colorsApiUrl = `http://192.168.1.102:1337/api/colors?locale=all&populate=*&pagination[pageSize]=100`;
+  const colorsApiUrl = `http://172.16.11.121:1337/api/colors?locale=all&populate=*&pagination[pageSize]=100`;
   const { loading: colorsLoading , error: colorsError , data: colorsResult } = useFetch<ColorsResult>(colorsApiUrl);
-  const itemDetailsPageApiUrl = `http://192.168.1.102:1337/api/item-details-page?locale=${locale}&populate=*`;
+  const itemDetailsPageApiUrl = `http://172.16.11.121:1337/api/item-details-page?locale=${locale}&populate=*`;
   const { loading: pageLoading , error: pageError , data: pageResult } = useFetch<PageResult>(itemDetailsPageApiUrl);
-  const subcategoriesApiUrl = `http://192.168.1.102:1337/api/sub-categories?locale=all&populate=*&pagination[pageSize]=100`;
+  const subcategoriesApiUrl = `http://172.16.11.121:1337/api/sub-categories?locale=all&populate=*&pagination[pageSize]=100`;
   const { loading: subcategoriesLoading , error: subcategoriesError , data: subcategoriesResult } = useFetch<SubCategoriesResult>(subcategoriesApiUrl);
 
   if (!id) {
@@ -350,7 +351,7 @@ const Page = () => {
     const productColor = productsColorsResult?.data.find(p => p?.id === pc?.id);
     const color = productColor?.attributes?.color;
     if (color && productColor?.attributes?.image?.data[0]?.attributes?.url) {
-      imagesByColor[color?.data?.attributes?.codiceEsadecimale] = `http://192.168.1.102:1337${productColor?.attributes?.image?.data[0]?.attributes?.url}`;
+      imagesByColor[color?.data?.attributes?.codiceEsadecimale] = `http://172.16.11.121:1337${productColor?.attributes?.image?.data[0]?.attributes?.url}`;
     }
     
   });
@@ -377,7 +378,7 @@ const Page = () => {
   </View>*/}
       <View style={styles.productContainer}>
         <View style={styles.imageContainer}>
-          { selectedColor && <Image source={{ uri: imagesByColor[selectedColor] || `http://192.168.1.102:1337${pageResult?.data.attributes.placeholder.data.attributes.url}` }} style={styles.image} />}
+          { selectedColor && <Image source={{ uri: imagesByColor[selectedColor] || `http://172.16.11.121:1337${pageResult?.data.attributes.placeholder.data.attributes.url}` }} style={styles.image} />}
         </View>
         <View style={styles.detailsContainer}>
             <Text style={styles.productName}>{product.attributes.name}</Text>

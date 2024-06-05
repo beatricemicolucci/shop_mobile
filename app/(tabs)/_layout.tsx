@@ -68,6 +68,7 @@ export default function Layout() {
     setLanguageModalVisible(!isLanguageModalVisible);
   };
 
+
   let [fontsLoaded] = useFonts({
     LeagueSpartan_700Bold,
     BodoniModa_400Regular,

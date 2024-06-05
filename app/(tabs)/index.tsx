@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import React, { useContext, useState, useEffect } from 'react';
 import { LanguageContext } from '@/contexts/LanguageContext';
 import useFetch from '@/hooks/useFetch';
@@ -56,9 +56,9 @@ const Page = () => {
   const languageContext = useContext(LanguageContext);
   const locale = languageContext?.locale;
 
-  const categoriesApiUrl = `http://192.168.1.101:1337/api/categories?locale=${locale}&populate=*`;
+  const categoriesApiUrl = `http://172.16.11.121:1337/api/categories?locale=${locale}&populate=*`;
   const { loading: loadingCategories, error: errorcategories, data: categoriesData } = useFetch<CategoriesData>(categoriesApiUrl);
-  const menuApiUrl = `http://192.168.1.101:1337/api/categories-menu?locale=${locale}&populate=*`;
+  const menuApiUrl = `http://172.16.11.121:1337/api/categories-menu?locale=${locale}&populate=*`;
   const { loading: menuLoading, error: menuError, data: menuData } = useFetch<MenuData>(menuApiUrl);
 
   const [selectedCategoryId, setSelectedCategoryId] = useState<number>(locale && locale === 'it-IT' ? 3 : 4);
@@ -77,6 +77,14 @@ const Page = () => {
       params: { id: subCategoryId },
     });
   };
+
+  if (loadingCategories || menuLoading) {
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
 
   const GridItem: React.FC<GridItemProps> = ({ item }) => (
     <View style={styles.itemContainer}>
@@ -112,7 +120,7 @@ const Page = () => {
             return (
               <View key={category.id} style={styles.categoryContent}>
                 <Image
-                  source={{ uri: `http://192.168.1.101:1337${category.attributes.cover.data[0].attributes.url}` }}
+                  source={{ uri: `http://172.16.11.121:1337${category.attributes.cover.data[0].attributes.url}` }}
                   style={styles.cover}
                 />
                 <FlatList
@@ -166,7 +174,7 @@ const styles = StyleSheet.create({
   },
   buttonsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-around',
     width: '100%',
   },
   categoryButton: {
@@ -216,5 +224,10 @@ const styles = StyleSheet.create({
   grid: {
     justifyContent: 'center',
     padding: 10,
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

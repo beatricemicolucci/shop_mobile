@@ -112,9 +112,9 @@ const ItemsList = () => {
   const languageContext = useContext(LanguageContext);
   const locale = languageContext?.locale;
 
-  const subcategoriesApiUrl = `http://192.168.1.102:1337/api/sub-categories?locale=all&populate=*&pagination[pageSize]=100`;
+  const subcategoriesApiUrl = `http://172.16.11.121:1337/api/sub-categories?locale=all&populate=*&pagination[pageSize]=100`;
   const { loading: subcategoriesLoading, error: subcategoriesError, data: subcategoriesResult } = useFetch<SubCategoriesResult>(subcategoriesApiUrl);
-  const productsApiUrl = `http://192.168.1.102:1337/api/products?locale=all&populate=*&pagination[pageSize]=100`;
+  const productsApiUrl = `http://172.16.11.121:1337/api/products?locale=all&populate=*&pagination[pageSize]=100`;
   const { loading: productsLoading, error: productsError, data: productsData } = useFetch<ProductsApiResponse>(productsApiUrl);
 
   if (subcategoriesLoading || productsLoading) {
@@ -161,19 +161,19 @@ const ItemsList = () => {
   const getImage = (productId: number): string | null => {
     const product = productsData?.data.find((product: ProductData) => product.id === productId);
     if (product && product.attributes.image && product.attributes.image.data.length > 0) {
-      return `http://192.168.1.102:1337${product.attributes.image.data[0].attributes.url}`
+      return `http://172.16.11.121:1337${product.attributes.image.data[0].attributes.url}`
     }
     return null;
   };
 
   const Breadcrumb = ({ text }: { text?: string }) => (
-    <TouchableOpacity style={styles.breadcrumb}>
+    <TouchableOpacity style={styles.breadcrumb} onPress={() => router.back()}>
       <Text style={styles.breadcrumbText}>{text || ''}</Text>
     </TouchableOpacity>
   );
 
   const GridItem: React.FC<GridItemProps> = ({ item }) => (
-      <TouchableOpacity style={styles.itemContainer} key={item.id} onPress={ () => router.push({
+      <TouchableOpacity style={[styles.itemContainer, { width: itemWidth }]} key={item.id} onPress={ () => router.push({
           pathname: ".././itemDetails/[id]",
           params: { id: item.id },
         })}
@@ -186,7 +186,9 @@ const ItemsList = () => {
     </TouchableOpacity>
   );
 
+  const screenWidth = Dimensions.get('window').width;
   const numColumns = 2;
+  const itemWidth = (screenWidth - 2 * 16 - (numColumns - 1) * 10) / numColumns;
 
   return (
     <View style={styles.container}>
@@ -317,7 +319,7 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
   },
   itemContainer: {
-    flex: 1,
+    flex: 0.5,
     margin: 10,
     backgroundColor: '#f9f9f9',
     borderRadius: 10,
@@ -325,8 +327,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
     shadowRadius: 2,
-    elevation: 5,
-    
+    elevation: 5, 
   },
   grid: {
     justifyContent: 'center',

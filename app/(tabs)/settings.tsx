@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { useLocalSearchParams, router } from 'expo-router'
 import { LanguageContext, LanguageProvider } from '@/contexts/LanguageContext';
@@ -30,12 +30,20 @@ const Page = () => {
       }
     const { setLocale } = languageContext;
 
-    const pageApiUrl = `http://192.168.1.102:1337/api/settings-page?locale=${locale}`
+    const pageApiUrl = `http://172.16.11.121:1337/api/settings-page?locale=${locale}`
     const {loading: loading, error: error, data: pageData} = useFetch<PageData>(pageApiUrl)
 
     const toggleLanguageModal = () => {
         setLanguageModalVisible(!isLanguageModalVisible);
-      };
+    };
+
+    if (loading) {
+        return (
+          <View style={styles.loaderContainer}>
+            <ActivityIndicator size="large" color="#0000ff" />
+          </View>
+    );
+    }
 
     return (
         <View style={styles.container}>
@@ -127,5 +135,10 @@ const styles = StyleSheet.create({
     icon: {
         marginHorizontal: 10,
         marginBottom: 5
-    }
+    },
+    loaderContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 });

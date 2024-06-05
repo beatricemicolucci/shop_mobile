@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native'
 import React, { useContext } from 'react'
 import { LanguageContext } from '@/contexts/LanguageContext';
 import useFetch from '@/hooks/useFetch';
@@ -32,10 +32,18 @@ const Page = () => {
 
   const languageContext = useContext(LanguageContext);
   const locale = languageContext?.locale;
-  const contactsDataApiUrl = `http://192.168.1.102:1337/api/company`;
-  const contactsFieldsApiUrl = `http://192.168.1.102:1337/api/contacts-bar?locale=${locale}`;
+  const contactsDataApiUrl = `http://172.16.11.121:1337/api/company`;
+  const contactsFieldsApiUrl = `http://172.16.11.121:1337/api/contacts-bar?locale=${locale}`;
   const { loading: loadingData, error: errorData, data: contactsData } = useFetch<ContactsData>(contactsDataApiUrl);
   const { loading: loadingFields, error: errorFields, data: contactsFields } = useFetch<ContactsFields>(contactsFieldsApiUrl);
+
+  if (loadingData || loadingFields) {
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
 
   return (
       <View style={styles.container}>
@@ -109,5 +117,10 @@ const styles = StyleSheet.create({
   scrollview: {
     width: '100%',
     marginBottom: 20
-  }
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 })

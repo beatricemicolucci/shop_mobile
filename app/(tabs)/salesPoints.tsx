@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { ScrollView, View, Text, StyleSheet, Image } from 'react-native';
+import { ScrollView, View, Text, StyleSheet, Image, ActivityIndicator } from 'react-native';
 import { Card } from '@rneui/base';
 import { LanguageContext } from '@/contexts/LanguageContext';
 import useFetch from '@/hooks/useFetch';
@@ -97,12 +97,21 @@ const Page = () => {
 
   const languageContext = useContext(LanguageContext);
   const locale = languageContext?.locale;
-  const salesPointsApiUrl = `http://192.168.1.102:1337/api/sales-points?locale=${locale}&populate=*`;
-  const salesPointPageApiUrl = `http://192.168.1.102:1337/api/sales-point-page?locale=${locale}&populate=*`;
-  const regionsApiUrl = `http://192.168.1.102:1337/api/regions?locale=${locale}&populate=*`;
+  const salesPointsApiUrl = `http://172.16.11.121:1337/api/sales-points?locale=${locale}&populate=*`;
+  const salesPointPageApiUrl = `http://172.16.11.121:1337/api/sales-point-page?locale=${locale}&populate=*`;
+  const regionsApiUrl = `http://172.16.11.121:1337/api/regions?locale=${locale}&populate=*`;
   const { loading: loadingData, error: errorData, data: salesPointsData } = useFetch<SalesPointsData>(salesPointsApiUrl);
   const { loading: loadingPage, error: errorPage, data: pageData } = useFetch<PageData>(salesPointPageApiUrl);
   const { loading: loadingRegions, error: errorRegions, data: regionsData } = useFetch<RegionsData>(regionsApiUrl);
+
+  
+  if (loadingData || loadingPage || loadingRegions) {
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
 
 
     return (
@@ -114,14 +123,6 @@ const Page = () => {
       <View style={styles.salesPointsContainer}>
         {salesPointsData?.data?.map((salesPoint, index) => (
           <Card key={index} containerStyle={styles.card}>
-            <View style={styles.imageContainer}>
-              <Image
-                source={{ uri: `http://192.168.1.102:1337${pageData?.data?.attributes?.shoppingImage?.data?.attributes?.url}` }}
-                style={styles.image}
-                alt="Image by jcomp on Freepik"
-              />
-              <View style={styles.overlay} />
-            </View>
             <View style={styles.cardContent}>
               <Text style={styles.region}>
                 {salesPoint?.attributes?.region?.data?.attributes?.region}
@@ -145,6 +146,7 @@ export default Page
 const styles = StyleSheet.create({
     container: {
       padding: 10,
+      backgroundColor: '#EAE3DF',
     },
     header: {
       flexDirection: 'row',
@@ -165,7 +167,8 @@ const styles = StyleSheet.create({
       borderRadius: 20,
       overflow: 'hidden',
       marginBottom: 15,
-      padding: 20
+      padding: 20,
+      
     },
     imageContainer: {
       position: 'relative',
@@ -201,5 +204,10 @@ const styles = StyleSheet.create({
       fontSize: 14,
       color: 'gray',
       fontFamily: 'Poppins_400Regular'
+    },
+    loaderContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
 })
